@@ -1,0 +1,56 @@
+El modulo main lo dividí en varias funciones
+
+terminar_juego -> Me crea una pantalla de victoria o de derrota cuando el juego termina.
+generar_musica -> Me genera la música del menú
+generar_sonido -> Me genera un sónido y me lo retorna.
+generar_texto -> Me genera un texto y me lo retorna
+imprimir_superficie -> Me hace el blit de una superficie
+verificar_partida -> Verifica si la partida termino o no retornandome un booleano
+
+El módulo tarjeta es donde se crea una tarjeta tenemos algunas funciones
+
+crear_tarjeta -> Crea mi diccionario tarjeta.
+El mismo tiene las siguientes claves.
+visible = Verifica que la tarjeta se pueda ver (superficie) o no se pueda ver (superficie_escondida)
+descubierto = Verifica si la tarjeta ya ha sido dada vuelta o no (cubierta o descubierta) principalmente lo usamos está bandera cuando se interactua con la tarjeta para evitar que se interactue cuando ya está cubierta por ejemplo.
+identificador = Un número que identifica a la tarjeta en cuestión. Es dado por el número a la que se le da la imagen en la carpeta recursos.
+superficie = La superficie de la tarjeta dada vuelta
+superficie_escondida = La superficie de la tarjeta por defecto. Siempre es la misma
+rectangulo = El rectangulo que caracteriza cada tarjeta.
+
+obtener_cantidad_cartas -> Obtiene la cantidad de cartas (cubiertas o descubiertas) que esten visibles (Me sirve para contar los puntos) como para límitar la seleccion del usuario. O sea que siempre interactue con dos cartas diferentes.
+
+descubrir_tarjetas -> Función que lo que hace es setear la bandera de descubierto en True para esa tarjeta especifica. Para que las mismas queden cubiertas el resto de la partida.
+
+El módulo tablero es donde se crea el tablero de mi memotest. Tiene los distintos elementos
+
+tarjetas = La lista de tarjetas creada dinámicamente.
+tiempo_ultimo_destape = Tiempo que pasa para que la tarjeta se destape automáticamente cuando el usuario no le da click a otra.
+sonido_acierto = Sonido que suena cuando las dos tarjetas seleccionadas coinciden
+sonido_error = Sonido que suena cuando las dos tarjetas seleccionadas no coinciden
+primer_tarjeta_seleccionada = La información de la primer tarjeta que el usuario elige
+segunda_tarjeta_seleccionada = La información de la segunda tarjeta que el usuario elige
+
+generar_lista_tarjetas() -> Función que se encarga de generarme la lista de tarjetas ordenada aleatoriamente
+En base a todos las tarjetas que existen yo debo guardarme los id de las mismas. Dos veces por cada id ya que son dos tarjetas iguales que va a haber en el tablero por cada tarjeta.
+Luego esos id los ordeno aleatoriamente.
+Recorro por un for tanto el eje X como el eje Y (seteo un step para que me vaya generando las dimensiones de cada tarjeta acorde la resolución de la pantalla)
+Creo la tarjeta y la agrego y voy incrementando el indice
+
+detectar_colision()-> Se encarga de verificar si hubo una colisión entre el click y la tarjeta.
+Hay que tener en cuenta que aparte de verificar la colisión hay que verificar que esa tarjeta no este visible ya que si está visible y hago click no deberia detectar la colisión.
+Si la primer_tarjeta_seleccionada es None significa que es la primera que elige el usuario, sino seria la segunda. En cualquiera de estos casos le voy a dar como valor la tarjeta a la cual hizo colisión con el mouse.
+Cuando hubo una colisión hago la tarjeta visible y le seteo el temporizador para especificar cuanto tiempo de espera le doy al usuario para que seleccione otra tarjeta.
+
+actualizar_tablero()-> Verifca si se necesita actualizar o no el tablero del memotest.
+Se verifica que el tiempo actual coincida con el tiempo del último destape (O sea que no hayan pasado los segundos correspondientes). Si el tiempo paso y no se selecciono otra tarjeta por ejemplo. La oculta.
+Si el tiempo no paso todavia empezaria a verificar si las tarjetas se encuentran o no.
+Si no se selecciono una segunda tarjeta o ni una primera la función encontrar_tarjetas retorna None ya que no hubo nada. No hay tarjetas como para buscar ello.
+Sino pueden ser dos cosas que las tarjetas que el usuario eligio coincidan o no. Si coinciden se ejecuta el sonido de acierto y el tiempo de destape vuelve a 0
+Si no coinciden se ejecuta un sonido de error y se cambia el sonido de destape para que acabe más rápido.
+Ocurra una o la otra las tarjetas seleccionadas vuelven al estado none ya que se termino una selección de tarjetas.
+
+encontrar_tarjetas()-> Simplemente verifica que los identificadores de la primer tarjeta seleccionada y segunda sean iguales sino retorna False. Si las tarjetas seleccionadas alguna o las dos son None retorna None.
+
+dibujar_tablero()-> Dibuja el tablero en pantalla dependiendo de la visibilidad.
+
